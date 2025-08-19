@@ -1,6 +1,6 @@
 
-IP,Server_Name,Patch_KB,Status,Installed_Date
-10.91.220.1,TSMC-Server1,KB2769166,Installed,2025-08-01
-10.91.220.1,TSMC-Server1,KB2756872,Missing,
-10.91.220.2,TSMC-Server2,KB4022718,Installed,2025-08-05
-10.91.220.3,TSMC-Server3,KB5000802,Installed,2025-08-08
+
+ServerID,IP,Server_Name,OS_Version,Vulnerabilities,Severity
+1,10.91.220.1,TSMC-Server1,Windows Server 2012,36,High
+2,10.91.220.2,TSMC-Server2,Windows Server 2016,12,Medium
+3,10.91.220.3,TSMC-Server3,Windows Server 2022,5,Low
