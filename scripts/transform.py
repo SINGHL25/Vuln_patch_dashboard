@@ -9,3 +9,11 @@ def load_and_transform():
     df = pd.concat([df1, df2, df3], axis=0, ignore_index=True)
     df.to_csv("data/processed/unified_data.csv", index=False)
     print("Unified data saved to data/processed/unified_data.csv")
+df = df.rename(columns={
+    'Server_Name': 'ServerName',
+    'Support_Status': 'Lifecycle'
+})
+
+# If Compliance column doesn't exist, create a dummy one for testing
+if 'Compliance' not in df.columns:
+    df['Compliance'] = np.random.randint(70, 100, size=len(df))
