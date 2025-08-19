@@ -4,8 +4,13 @@ import pandas as pd
 import plotly.express as px
 from scripts.utils import load_unified_data
 
+
+
+
 def engineer_dashboard():
     st.title("🛠 Engineer Dashboard - Server Drilldown")
+    st.table(server_data[['ServerName','IP','OS_Version','Lifecycle','Compliance']])
+
     
     df = load_unified_data()
     servers = df['ServerID'].unique()
