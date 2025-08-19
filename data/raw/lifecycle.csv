@@ -1,4 +1,4 @@
-ServerID,IP,Server_Name,OS_Version,Support_Status,End_of_Life
-1,10.91.220.1,TSMC-Server1,Windows Server 2012,Extended,2023-10-10
-2,10.91.220.2,TSMC-Server2,Windows Server 2016,Mainstream,2027-01-12
-3,10.91.220.3,TSMC-Server3,Windows Server 2022,Mainstream,2030-01-01
+ServerID,IP,ServerName,OS_Version,Vulnerabilities,Severity,Compliance,Lifecycle
+1,10.91.220.1,TSMC-Server1,Windows Server 2012,36,High,80,End-of-Support
+2,10.91.220.2,TSMC-Server2,Windows Server 2016,12,Medium,95,Supported
+3,10.91.220.3,TSMC-Server3,Windows Server 2022,5,Low,100,Supported
