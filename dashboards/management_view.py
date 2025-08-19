@@ -1,25 +1,45 @@
 
 import streamlit as st
-import pandas as pd
 import plotly.express as px
-from scripts.utils import load_unified_data
+import pandas as pd
 
-def management_dashboard():
-    st.title("📊 Management Dashboard - KPIs & Compliance")
-    
-    df = load_unified_data()
-    
-    st.subheader("Server Compliance Summary")
-    compliance_counts = df['Compliance'].value_counts()
-    fig = px.pie(names=compliance_counts.index, values=compliance_counts.values, title='Compliance %')
-    st.plotly_chart(fig)
-    
-    st.subheader("Vulnerable Servers by Severity")
-    severity_counts = df.groupby('Severity')['ServerID'].nunique().reset_index()
-    fig2 = px.bar(severity_counts, x='Severity', y='ServerID', color='Severity', title='Vulnerable Servers')
-    st.plotly_chart(fig2)
-    
-    st.subheader("End-of-Support Risks")
-    eos_counts = df['Lifecycle'].value_counts()
-    fig3 = px.bar(eos_counts, x=eos_counts.index, y=eos_counts.values, color=eos_counts.index, title='EOL / Support Risk')
-    st.plotly_chart(fig3)
+def management_dashboard(df):
+    st.title("📊 Management Dashboard - Server Overview")
+
+    # KPIs
+    total_servers = df['ServerID'].nunique()
+    total_vulns = df['Vulnerabilities'].sum()
+    avg_compliance = df['Compliance'].mean()
+    eos_servers = df[df['Lifecycle'] == 'End-of-Support'].shape[0]
+
+    col1, col2, col3, col4 = st.columns(4)
+    col1.metric("Total Servers", total_servers)
+    col2.metric("Total Vulnerabilities", total_vulns)
+    col3.metric("Avg Compliance %", f"{avg_compliance:.1f}")
+    col4.metric("End-of-Support Servers", eos_servers)
+
+    st.markdown("---")
+
+    # Vulnerabilities by Severity
+    severity_count = df.groupby('Severity')['ServerID'].count().reset_index()
+    fig1 = px.bar(severity_count, x='Severity', y='ServerID', color='Severity',
+                  title="Servers by Vulnerability Severity", color_discrete_sequence=px.colors.qualitative.Set2)
+    st.plotly_chart(fig1, use_container_width=True)
+
+    # Compliance Distribution
+    fig2 = px.histogram(df, x='Compliance', nbins=10, color_discrete_sequence=['#636EFA'],
+                        title="Server Compliance Distribution")
+    st.plotly_chart(fig2, use_container_width=True)
+
+    # Lifecycle Status Pie Chart
+    lifecycle_count = df['Lifecycle'].value_counts().reset_index()
+    lifecycle_count.columns = ['Lifecycle','Count']
+    fig3 = px.pie(lifecycle_count, names='Lifecycle', values='Count', color='Lifecycle',
+                  title="Server Lifecycle Status", color_discrete_sequence=px.colors.qualitative.Pastel)
+    st.plotly_chart(fig3, use_container_width=True)
+
+    # Optional: Vulnerabilities vs Compliance Scatter
+    fig4 = px.scatter(df, x='Compliance', y='Vulnerabilities', color='Severity',
+                      hover_data=['ServerName','IP','OS_Version'], 
+                      title="Vulnerabilities vs Compliance by Server")
+    st.plotly_chart(fig4, use_container_width=True)
